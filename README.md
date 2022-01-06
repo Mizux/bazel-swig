@@ -24,7 +24,7 @@ Github-CI:
 <a href="#license">License</a> |
 </nav>
 
-Bazel C++ sample with tests and GitHub CI support.
+Bazel C++ SWIG sample with tests and GitHub CI support.
 
 This project should run on GNU/Linux, MacOS and Windows.
 
