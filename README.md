@@ -14,6 +14,7 @@ Github-CI:
 [github_amd64_docker_link]: https://github.com/Mizux/bazel-swig/actions/workflows/amd64_docker.yml
 
 # Introduction
+
 <nav for="project"> |
 <a href="#requirement">Requirement</a> |
 <a href="#codemap">Codemap</a> |
@@ -29,56 +30,54 @@ Bazel C++ SWIG sample with tests and GitHub CI support.
 This project should run on GNU/Linux, MacOS and Windows.
 
 ## Requirement
+
 You'll need:
 
 * "Bazel >= 4.0".
 
 ## Codemap
+
 The project layout is as follow:
 
 * [WORKSPACE](WORKSPACE) Top-level for [Bazel](https://bazel.build) based build.
-
-## Dependencies
-To complexify a little, the CMake project is composed of three libraries (Foo, Bar and FooBar)
-with the following dependencies:
-
-```sh
-Foo:
-Bar:
-FooBar: PUBLIC Foo PRIVATE Bar
-FooBarApp: PRIVATE FooBar
-```
-
-note: Since `Foo` is a public dependency of `FooBar`, then `FooBarApp` will
-*see* `Foo` inlude directories
+* [pure_lib](pure_lib) Pure python library to check Python support.
+* [native_lib](native_lib) Simple C++ library.
+  * [python](native_lib/python) Python wrapper using pybind11.
 
 ## Build
+
 To build this example you should use:
 
 * on UNIX:
+
   ```sh
-  bazel build --cxxopt=-std=c++17 //...:all
+  bazel build --cxxopt=-std=c++17 ...
   ```
 
 * on Windows when using MSVC:
+
   ```sh
-  bazel build --cxxopt="-std:c++17" //...:all
+  bazel build --cxxopt="-std:c++17" ...
   ```
 
 ## Running Tests
+
 To build this example you should use:
 
 * on UNIX:
+
   ```sh
-  bazel test --cxxopt=-std=c++17 //...:all
+  bazel test --cxxopt=-std=c++17 ...
   ```
 
 * on Windows when using MSVC:
+
   ```sh
-  bazel test --cxxopt="-std:c++17" //...:all
+  bazel test --cxxopt="-std:c++17" ...
   ```
 
 ## CI Setup
+
 Please take a look at [.github/workflows](.github/workflows) to find the configuration file for each jobs.
 
 To install *bazel* on each hosted runner, follow these links:
@@ -93,26 +92,33 @@ ref: https://docs.github.com/en/actions/using-github-hosted-runners/customizing-
   ref: https://community.chocolatey.org/packages/bazel/
 
 ## Appendices
+
 Few links on the subject...
 
 ### Resources
+
 Project layout:
+
 * The Pitchfork Layout Revision 1 (cxx-pflR1)
 
 Bazel:
+
 * https://docs.bazel.build/versions
 
 ### Misc
+
 Image has been generated using [plantuml](http://plantuml.com/):
+
 ```bash
 plantuml -Tsvg docs/{file}.dot
 ```
 So you can find the dot source files in [docs](docs).
 
 ## License
+
 Apache 2. See the LICENSE file for details.
 
 ## Disclaimer
+
 This is not an official Google product, it is just code that happens to be
 owned by Google.
-
