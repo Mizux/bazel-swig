@@ -1,10 +1,20 @@
 workspace(name = "org_mizux_bazelswig")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
 
 git_repository(
     name = "com_google_googletest",
     tag = "release-1.12.1",
     remote = "https://github.com/google/googletest.git",
+)
+
+# Swig support
+
+# pcre source code repository
+new_git_repository(
+    name = "pcre2",
+    build_file = "//bazel:pcre2.BUILD",
+    tag = "pcre2-10.42",
+    remote = "https://github.com/PCRE2Project/pcre2.git",
 )
 
 # generate Patch:
