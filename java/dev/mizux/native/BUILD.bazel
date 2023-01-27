@@ -1,0 +1,36 @@
+# Utilities to load native libraries in java.
+java_library(
+    name = "Loader",
+    srcs = ["Loader.java"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@maven//:net_java_dev_jna_jna",
+    ],
+)
+
+cc_binary(
+    name = "libjninative.so",
+    linkshared = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "//native_lib/java:foo_cc",
+    ],
+)
+
+cc_binary(
+    name = "libjninative.dylib",
+    linkshared = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "//native_lib/java:foo_cc",
+    ],
+)
+
+cc_binary(
+    name = "jninative.dll",
+    linkshared = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "//native_lib/java:foo_cc",
+    ],
+)

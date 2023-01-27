@@ -1,16 +1,3 @@
-# Copyright 2010-2022 Google LLC
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """Build definitions for SWIG Java."""
 
 def _create_src_jar(ctx, java_runtime_info, input_dir, output_jar):
@@ -135,7 +122,7 @@ It's expected that the `swig` binary exists in the host's path.
     },
 )
 
-def ortools_java_wrap_cc(
+def mizux_java_wrap_cc(
         name,
         src,
         package,
@@ -205,11 +192,11 @@ def ortools_java_wrap_cc(
         name = name,
         srcs = [srcjar],
         deps = java_deps,
-        runtime_deps = [
-            "//ortools/java/com/google/ortools:libjniortools.so",
-            "//ortools/java/com/google/ortools:libjniortools.dylib",
-            "//ortools/java/com/google/ortools:jniortools.dll",
-        ],
+        runtime_deps = select({
+          "@platforms//os:linux": ["//java/dev/mizux/native:libjninative.so"],
+          "@platforms//os:osx": ["//java/dev/mizux/native:libjninative.dylib"],
+          "@platforms//os:windows": ["//java/dev/mizux/native:jninative.dll"],
+        }),
         visibility = visibility,
         **kwargs
     )

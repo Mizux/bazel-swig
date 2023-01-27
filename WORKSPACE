@@ -56,7 +56,6 @@ git_repository(
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
 rules_jvm_external_deps()
-
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 rules_jvm_external_setup()
 
@@ -86,7 +85,6 @@ git_repository(
 
 load("@contrib_rules_jvm//:repositories.bzl", "contrib_rules_jvm_deps")
 contrib_rules_jvm_deps()
-
 load("@contrib_rules_jvm//:setup.bzl", "contrib_rules_jvm_setup")
 contrib_rules_jvm_setup()
 
