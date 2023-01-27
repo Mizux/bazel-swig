@@ -37,6 +37,16 @@ new_git_repository(
     remote = "https://github.com/swig/swig.git",
 )
 
+## Python
+
+git_repository(
+    name = "rules_python",
+    tag = "0.16.2",
+    remote = "https://github.com/bazelbuild/rules_python.git",
+)
+
+## JAVA
+
 # Java support (with junit 5)
 git_repository(
     name = "rules_jvm_external",
