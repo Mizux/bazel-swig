@@ -3,7 +3,7 @@
 %include "std_vector.i"
 %include "std_string.i"
 %include "std_pair.i"
-%include "base.i"
+%include "java/base.i"
 
 %template(StringVector) std::vector<std::string>;
 %template(StringJaggedArray) std::vector<std::vector<std::string>>;

@@ -1,0 +1,9 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "base_swig",
+    srcs = [
+        "base.i",
+    ],
+)
+

@@ -8,7 +8,7 @@ mizux_java_wrap_cc(
     src = "foo.i",
     package = "dev.mizux.native.foo",
     swig_includes = [
-        "//bazel:base_swig",
+        "//java:base_swig",
     ],
     use_directors = True,
     visibility = ["//visibility:public"],
