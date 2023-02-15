@@ -1,5 +1,8 @@
 # Python wrapper for foo library.
 load("@rules_python//python:defs.bzl", "py_test", "py_library")
+load("@rules_java//java:defs.bzl", "java_test", "java_library")
+load("@rules_jvm_external//:defs.bzl", "artifact")
+load("@contrib_rules_jvm//java:defs.bzl", "java_junit5_test")
 
 py_library(
   name = "mylib",
@@ -14,6 +17,30 @@ py_test(
   python_version = "PY3",
   deps = [
     ":mylib",
+  ],
+  tags = ["unit"],
+)
+
+
+java_library(
+  name = "MyLib",
+  srcs = ["MyLib.java"],
+  deps = [],
+)
+
+java_test(
+  name = "MyLibTest",
+  size = "small",
+  srcs = ["MyLibTest.java"],
+  test_class = "dev.mizux.bazel.MyLibTest",
+  deps = [
+    ":MyLib",
+    "@maven//:com_google_truth_truth",
+    artifact("org.junit.jupiter:junit-jupiter-api"),
+    artifact("org.junit.jupiter:junit-jupiter-params"),
+    artifact("org.junit.jupiter:junit-jupiter-engine"),
+    artifact("org.junit.platform:junit-platform-launcher"),
+    artifact("org.junit.platform:junit-platform-reporting"),
   ],
   tags = ["unit"],
 )
