@@ -140,7 +140,7 @@ def mizux_java_wrap_cc(
 
     Args:
         name: target name.
-        src: single .swig source file.
+        src: single .i source file.
         package: package of generated Java files.
         deps: C++ deps.
         java_deps: Java deps.
@@ -193,9 +193,9 @@ def mizux_java_wrap_cc(
         srcs = [srcjar],
         deps = java_deps,
         runtime_deps = select({
-          "@platforms//os:linux": ["//java/dev/mizux/native:libjninative.so"],
-          "@platforms//os:osx": ["//java/dev/mizux/native:libjninative.dylib"],
-          "@platforms//os:windows": ["//java/dev/mizux/native:jninative.dll"],
+          "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
+          "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
+          "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
         }),
         visibility = visibility,
         **kwargs

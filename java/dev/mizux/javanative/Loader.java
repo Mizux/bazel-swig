@@ -1,17 +1,4 @@
-// Copyright 2010-2022 Google LLC
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-package dev.mizux.bazel;
+package dev.mizux.javanative;
 
 import com.sun.jna.Platform;
 import java.io.IOException;
@@ -31,7 +18,7 @@ import java.util.Objects;
 
 /** Load native libraries needed for using ortools-java.*/
 public class Loader {
-  private static final String RESOURCE_PATH = "ortools-" + Platform.RESOURCE_PREFIX + "/";
+  private static final String RESOURCE_PATH = "native-" + Platform.RESOURCE_PREFIX + "/";
 
   /** Try to locate the native libraries directory.*/
   private static URI getNativeResourceURI() throws IOException {
@@ -61,7 +48,7 @@ public class Loader {
    */
   private static Path unpackNativeResources(URI resourceURI) throws IOException {
     Path tempPath;
-    tempPath = Files.createTempDirectory("ortools-java");
+    tempPath = Files.createTempDirectory("bazel-java");
     tempPath.toFile().deleteOnExit();
 
     PathConsumer<?> visitor;
@@ -114,7 +101,7 @@ public class Loader {
         Path tempPath = unpackNativeResources(resourceURI);
         // Load the native library
         System.load(tempPath.resolve(RESOURCE_PATH)
-                        .resolve(System.mapLibraryName("jniortools"))
+                        .resolve(System.mapLibraryName("jninative"))
                         .toString());
         loaded = true;
       } catch (IOException e) {

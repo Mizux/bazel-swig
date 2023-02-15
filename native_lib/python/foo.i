@@ -14,7 +14,7 @@
 
 // Add necessary symbols to generated header
 %{
-#include <foo/Foo.hpp>
+#include <foo.hpp>
 %}
 
 %ignore ""; // ignore all
@@ -55,6 +55,6 @@ namespace foo {
 } // namespace foo
 
 // Process symbols in header
-%include "foo/Foo.hpp"
+%include "foo.hpp"
 
 %unignore ""; // unignore all

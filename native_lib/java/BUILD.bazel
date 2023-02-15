@@ -6,7 +6,7 @@ load("@contrib_rules_jvm//java:defs.bzl", "java_junit5_test")
 mizux_java_wrap_cc(
     name = "foo",
     src = "foo.i",
-    package = "dev.mizux.native.foo",
+    package = "dev.mizux.javanative",
     swig_includes = [
         "//java:base_swig",
     ],
@@ -21,13 +21,13 @@ java_junit5_test(
     name = "FooTest",
     srcs = ["FooTest.java"],
     data = select({
-      "@platforms//os:linux": ["//java/dev/mizux/native:libjninative.so"],
-      "@platforms//os:osx": ["//java/dev/mizux/native:libjninative.dylib"],
-      "@platforms//os:windows": ["//java/dev/mizux/native:jninative.dll"],
+      "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
+      "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
+      "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
     }),
-    test_class = "dev.mizux.native.foo.FooTest",
+    test_class = "dev.mizux.javanative.FooTest",
     deps = [
-      "//java/dev/mizux/native:Loader",
+      "//java/dev/mizux/javanative:Loader",
       "//native_lib/java:foo",
       "@maven//:com_google_truth_truth",
       artifact("org.junit.jupiter:junit-jupiter-api"),

@@ -1,4 +1,4 @@
-#include "foo/foo.hpp"
+#include "foo.hpp"
 
 #include <gtest/gtest.h>
 #include <iostream>
