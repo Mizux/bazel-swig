@@ -10,6 +10,10 @@ java_library(
 
 cc_binary(
     name = "libjninative.so",
+    target_compatible_with = select({
+      "@platforms//os:linux": [],
+      "//conditions:default": ["@platforms//:incompatible"],
+    }),
     linkshared = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -19,6 +23,10 @@ cc_binary(
 
 cc_binary(
     name = "libjninative.dylib",
+    target_compatible_with = select({
+      "@platforms//os:osx": [],
+      "//conditions:default": ["@platforms//:incompatible"],
+    }),
     linkshared = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -28,6 +36,10 @@ cc_binary(
 
 cc_binary(
     name = "jninative.dll",
+    target_compatible_with = select({
+      "@platforms//os:windows": [],
+      "//conditions:default": ["@platforms//:incompatible"],
+    }),
     linkshared = True,
     visibility = ["//visibility:public"],
     deps = [
