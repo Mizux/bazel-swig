@@ -52,13 +52,13 @@ To build this example you should use:
 * on UNIX:
 
   ```sh
-  bazel build --cxxopt=-std=c++17 ...
+  bazel build -c opt --cxxopt=-std=c++17 ...
   ```
 
 * on Windows when using MSVC:
 
   ```sh
-  bazel build --cxxopt="-std:c++17" ...
+  bazel build -c opt --cxxopt="-std:c++17" ...
   ```
 
 ## Running Tests
@@ -68,13 +68,13 @@ To build this example you should use:
 * on UNIX:
 
   ```sh
-  bazel test --cxxopt=-std=c++17 ...
+  bazel test -c opt --cxxopt=-std=c++17 --test_output=errors --nocache_test_results ...
   ```
 
 * on Windows when using MSVC:
 
   ```sh
-  bazel test --cxxopt="-std:c++17" ...
+  bazel test -c opt --cxxopt="-std:c++17" --test_output=errors --nocache_test_results ...
   ```
 
 ## CI Setup
