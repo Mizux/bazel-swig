@@ -21,16 +21,11 @@ java_junit5_test(
   name = "FooTest",
   size = "small",
   srcs = ["FooTest.java"],
-  data = [
-    "//java/dev/mizux/javanative:libjninative.so",
-    "//java/dev/mizux/javanative:libjninative.dylib",
-    "//java/dev/mizux/javanative:jninative.dll",
-  ],
-  #data = select({
-  #  "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
-  #  "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
-  #  "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
-  #}),
+  data = select({
+    "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
+    "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
+    "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
+  }),
   test_class = "dev.mizux.javanative.FooTest",
   deps = [
     "//java/dev/mizux/javanative:Loader",
