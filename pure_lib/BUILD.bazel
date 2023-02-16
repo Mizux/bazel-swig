@@ -28,7 +28,7 @@ java_library(
   deps = [],
 )
 
-java_test(
+java_junit5_test(
   name = "MyLibTest",
   size = "small",
   srcs = ["MyLibTest.java"],

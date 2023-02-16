@@ -1,12 +1,13 @@
 package dev.mizux.bazel;
 
 import java.lang.ref.WeakReference;
+
+import dev.mizux.bazel.MyLib;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import dev.mizux.bazel.MyLib;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** @author Mizux */
 public class MyLibTest {
