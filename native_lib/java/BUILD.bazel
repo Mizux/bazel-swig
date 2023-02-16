@@ -10,7 +10,7 @@ mizux_java_wrap_cc(
     swig_includes = [
         "//java:base_swig",
     ],
-    use_directors = True,
+    #use_directors = True,
     visibility = ["//visibility:public"],
     deps = [
         "//native_lib:foo",
