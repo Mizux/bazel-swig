@@ -14,7 +14,7 @@
 
 // Add necessary symbols to generated header
 %{
-#include <native_lib/foo.hpp>
+#include "native_lib/foo.h"
 %}
 
 %ignore "";
@@ -55,6 +55,6 @@ namespace foo {
 } // namespace foo
 
 // Process symbols in header
-%include "native_lib/foo.hpp"
+%include "native_lib/foo.h"
 
 %unignore ""; // unignore all

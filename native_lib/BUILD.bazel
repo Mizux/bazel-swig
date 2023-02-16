@@ -2,14 +2,14 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "foo",
-    srcs = ["foo.cpp"],
-    hdrs = ["foo.hpp"],
+    srcs = ["foo.cc"],
+    hdrs = ["foo.h"],
     visibility = ["//visibility:public"],
 )
 
 cc_test(
     name = "foo_test",
-    srcs = ["foo_test.cpp"],
+    srcs = ["foo_test.cc"],
     #copts = ["-Iexternal/gtest/include"],
     deps = [
         ":foo",
