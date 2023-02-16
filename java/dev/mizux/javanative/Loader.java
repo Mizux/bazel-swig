@@ -48,7 +48,7 @@ public class Loader {
    */
   private static Path unpackNativeResources(URI resourceURI) throws IOException {
     Path tempPath;
-    tempPath = Files.createTempDirectory("bazel-java");
+    tempPath = Files.createTempDirectory("native-java");
     tempPath.toFile().deleteOnExit();
 
     PathConsumer<?> visitor;
@@ -91,7 +91,7 @@ public class Loader {
   public static synchronized void loadNativeLibraries() {
     if (!loaded) {
       try {
-        System.loadLibrary("jniortools");
+        System.loadLibrary("jninative");
         return;
       } catch (UnsatisfiedLinkError exception) {
         // Do nothing.
