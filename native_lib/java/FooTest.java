@@ -4,13 +4,14 @@ import java.lang.ref.WeakReference;
 import java.util.AbstractList;
 
 import dev.mizux.javanative.Loader;
-import dev.mizux.javanative.foo.Foo;
-import dev.mizux.javanative.foo.Globals;
-import dev.mizux.javanative.foo.StringVector;
-import dev.mizux.javanative.foo.StringJaggedArray;
-import dev.mizux.javanative.foo.IntPair;
-import dev.mizux.javanative.foo.PairVector;
-import dev.mizux.javanative.foo.PairJaggedArray;
+import dev.mizux.javanative.Foo;
+import dev.mizux.javanative.Globals;
+import dev.mizux.javanative.StringVector;
+import dev.mizux.javanative.StringJaggedArray;
+import dev.mizux.javanative.IntPair;
+import dev.mizux.javanative.PairVector;
+import dev.mizux.javanative.PairJaggedArray;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,10 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** @author Mizux */
-public class FooTest {
+public final class FooTest {
+  @BeforeEach
+  public void setUp() {
+    Loader.loadNativeLibraries();
+  }
+
   @Test
   public void testFreeFunctions() {
-    Loader.loadNativeLibraries();
     try {
       Globals.freeFunction(32);
       Globals.freeFunction((long)64);
@@ -32,7 +37,6 @@ public class FooTest {
 
   @Test
   public void testStaticMethods() {
-    Loader.loadNativeLibraries();
     try {
       Foo.staticFunction(32);
       Foo.staticFunction((long)64);
@@ -43,7 +47,6 @@ public class FooTest {
 
   @Test
   public void testStringVector() {
-    Loader.loadNativeLibraries();
     try {
       {
         StringVector result = Globals.stringVectorOutput(5);
@@ -70,7 +73,6 @@ public class FooTest {
 
   @Test
   public void testStringJaggedArray() {
-    Loader.loadNativeLibraries();
     try {
       {
         AbstractList<StringVector> result = Globals.stringJaggedArrayOutput(5);
@@ -100,7 +102,6 @@ public class FooTest {
 
   @Test
   public void testPairVector() {
-    Loader.loadNativeLibraries();
     try {
       {
         PairVector result = Globals.pairVectorOutput(5);
@@ -129,7 +130,6 @@ public class FooTest {
 
   @Test
   public void testPairJaggedArray() {
-    Loader.loadNativeLibraries();
     try {
       {
         AbstractList<PairVector> result = Globals.pairJaggedArrayOutput(5);
@@ -159,7 +159,6 @@ public class FooTest {
 
   @Test
   public void testFoo() {
-    Loader.loadNativeLibraries();
     try {
       Foo f = new Foo();
       f.setInt(32);
@@ -184,7 +183,6 @@ public class FooTest {
   @ParameterizedTest
   @ValueSource(booleans = { false, true })
   public void testFooGC(boolean enableGC) throws Exception {
-    Loader.loadNativeLibraries();
     Foo f = new Foo();
     f.setInt(32);
     f.setInt64((long)64);
