@@ -13,6 +13,12 @@ jobs:
         #brew install bazel
     - name: Check Bazel
       run: bazel version
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    - name: Check mvn
+      run: mvn --version
     - name: Build
       run: bazel build --cxxopt=-std=c++17 --test_output=errors ...
     - name: Test
