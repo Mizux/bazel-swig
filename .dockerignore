@@ -12,14 +12,12 @@ ci/docs
 ci/cache
 ci/export
 
-AUTHORS
-CONTRIBUTING.md
-CONTRIBUTORS
 LICENSE
 README.md
 docs
 
-# Native cmake build
+# Native build
+bazel-*/
 build/
 build*/
 
