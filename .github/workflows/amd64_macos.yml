@@ -6,20 +6,22 @@ jobs:
   bazel:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Install Bazel
-      run: |
-        brew update
-        #brew install bazel
-    - name: Check Bazel
-      run: bazel version
-    - uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-    - name: Check mvn
-      run: mvn --version
-    - name: Build
-      run: bazel build --cxxopt=-std=c++17 --test_output=errors ...
-    - name: Test
-      run: bazel test --cxxopt=-std=c++17 --test_output=errors ...
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set Java to OpenJDK 17 (Temurin)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Check mvn
+        run: mvn --version
+      - name: Install Bazel
+        run: |
+          brew update
+          #brew install bazel
+      - name: Check Bazel
+        run: bazel version
+      - name: Build
+        run: bazel build -c opt --cxxopt=-std=c++17 ...
+      - name: Test
+        run: bazel test -c opt --cxxopt=-std=c++17 --test_output=errors ...
