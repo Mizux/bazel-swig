@@ -92,6 +92,7 @@ public class Loader {
     if (!loaded) {
       try {
         System.loadLibrary("jninative");
+        loaded = true;
         return;
       } catch (UnsatisfiedLinkError exception) {
         // Do nothing.
