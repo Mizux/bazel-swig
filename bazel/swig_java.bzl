@@ -36,7 +36,6 @@ def _java_wrap_cc_impl(ctx):
     # Add swig LIB files.
     swig_base_path = ctx.executable._swig.dirname
     swig_lib_path = swig_base_path + "/swig.runfiles/swig/Lib"
-    include_path_sets.append(depset([swig_lib_path + "/java", swig_lib_path]))
 
     java_files_dir = ctx.actions.declare_directory("java_files")
 
@@ -57,10 +56,28 @@ def _java_wrap_cc_impl(ctx):
     if ctx.attr.use_directors:
         generated_c_files.append(outhdr)
 
+    tmp_env = {}
+    tmp_env |= {'SWIG_LIB': 'external/swig/Lib'}
+
+    out_check = ctx.actions.declare_file(swig_base_path + "/swig_check.log")
+    ctx.actions.run(
+        outputs = [out_check],
+        inputs = depset([src] + ctx.files.swig_includes, transitive = header_sets),
+
+        #executable = 'pwd',
+        #executable = 'ls',
+        #arguments = ['-R'],
+
+        env = tmp_env,
+        executable = ctx.executable._swig,
+        arguments = ['-swiglib'],
+        mnemonic = "SwigCheck",
+    )
     ctx.actions.run(
         outputs = generated_c_files + [java_files_dir],
         inputs = depset([src] + ctx.files.swig_includes, transitive = header_sets),
         executable = ctx.executable._swig,
+        env = tmp_env,
         arguments = [swig_args],
         mnemonic = "SwigCompile",
     )
