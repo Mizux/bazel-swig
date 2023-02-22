@@ -91,10 +91,20 @@ public class Loader {
   public static synchronized void loadNativeLibraries() {
     if (!loaded) {
       try {
+        // prints the name of the Operating System
+        System.out.println("OS: " + System.getProperty("os.name"));
+        System.out.println("Library: " + System.mapLibraryName("jninative"));
+
+        String currentPath = new java.io.File(".").getCanonicalPath();
+        System.out.println("Current dir:" + currentPath);
+
+        String currentDir = System.getProperty("user.dir");
+        System.out.println("Current dir using System:" + currentDir);
+
         System.loadLibrary("jninative");
         loaded = true;
         return;
-      } catch (UnsatisfiedLinkError exception) {
+      } catch (Exception exception) {
         // Do nothing.
       }
       try {
