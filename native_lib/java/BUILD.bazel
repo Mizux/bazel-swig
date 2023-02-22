@@ -1,5 +1,6 @@
 # Java wrapper for foo library.
 load("//bazel:swig_java.bzl", "mizux_java_wrap_cc")
+load("@rules_java//java:defs.bzl", "java_test")
 load("@rules_jvm_external//:defs.bzl", "artifact")
 load("@contrib_rules_jvm//java:defs.bzl", "java_junit5_test")
 
@@ -38,4 +39,20 @@ java_junit5_test(
     artifact("org.junit.platform:junit-platform-reporting"),
   ],
   tags = ["unit"],
+)
+
+java_test(
+  name = "BarTest",
+  size = "small",
+  srcs = ["BarTest.java"],
+  data = select({
+    "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
+    "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
+    "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
+  }),
+  main_class = "dev.mizux.javanative.BarTest",
+  deps = [
+    "//java/dev/mizux/javanative:Loader",
+    ":foo",
+  ],
 )
