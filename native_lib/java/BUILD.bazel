@@ -30,6 +30,7 @@ java_junit5_test(
   test_class = "dev.mizux.javanative.FooTest",
   jvm_flags = select({
     "@platforms//os:windows": ["-Djava.library.path=..\\\\..\\\\..\\\\..\\\\java\\\\dev\\\\mizux\\\\javanative"],
+    "//conditions:default": [],
   }),
   deps = [
     "//java/dev/mizux/javanative:Loader",
@@ -56,6 +57,7 @@ java_test(
   main_class = "dev.mizux.javanative.BarTest",
   jvm_flags = select({
     "@platforms//os:windows": ["-Djava.library.path=..\\\\..\\\\..\\\\..\\\\java\\\\dev\\\\mizux\\\\javanative"],
+    "//conditions:default": [],
   }),
   deps = [
     "//java/dev/mizux/javanative:Loader",
