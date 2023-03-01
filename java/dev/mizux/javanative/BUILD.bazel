@@ -1,13 +1,4 @@
 # Utilities to load native libraries in java.
-java_library(
-    name = "Loader",
-    srcs = ["Loader.java"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "@maven//:net_java_dev_jna_jna",
-    ],
-)
-
 cc_binary(
     name = "libjninative.so",
     target_compatible_with = select({
@@ -46,3 +37,18 @@ cc_binary(
         "//native_lib/java:foo_cc",
     ],
 )
+
+java_library(
+    name = "Loader",
+    srcs = ["Loader.java"],
+    visibility = ["//visibility:public"],
+    runtime_deps = select({
+      "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
+      "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
+      "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
+    }),
+    deps = [
+        "@maven//:net_java_dev_jna_jna",
+    ],
+)
+

@@ -190,11 +190,6 @@ def mizux_java_wrap_cc(
         name = name,
         srcs = [srcjar],
         deps = java_deps,
-        runtime_deps = select({
-          "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
-          "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
-          "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
-        }),
         visibility = visibility,
         **kwargs
     )

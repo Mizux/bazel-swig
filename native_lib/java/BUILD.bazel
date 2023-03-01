@@ -22,19 +22,14 @@ java_junit5_test(
   name = "FooTest",
   size = "small",
   srcs = ["FooTest.java"],
-  data = select({
-    "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
-    "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
-    "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
-  }),
   test_class = "dev.mizux.javanative.FooTest",
   jvm_flags = select({
     "@platforms//os:windows": ["-Djava.library.path=..\\\\..\\\\..\\\\..\\\\java\\\\dev\\\\mizux\\\\javanative"],
     "//conditions:default": [],
   }),
   deps = [
-    "//java/dev/mizux/javanative:Loader",
     ":foo",
+    "//java/dev/mizux/javanative:Loader",
     "@maven//:com_google_truth_truth",
     artifact("org.junit.jupiter:junit-jupiter-api"),
     artifact("org.junit.jupiter:junit-jupiter-params"),
@@ -49,18 +44,13 @@ java_test(
   name = "BarTest",
   size = "small",
   srcs = ["BarTest.java"],
-  data = select({
-    "@platforms//os:linux": ["//java/dev/mizux/javanative:libjninative.so"],
-    "@platforms//os:osx": ["//java/dev/mizux/javanative:libjninative.dylib"],
-    "@platforms//os:windows": ["//java/dev/mizux/javanative:jninative.dll"],
-  }),
   main_class = "dev.mizux.javanative.BarTest",
   jvm_flags = select({
     "@platforms//os:windows": ["-Djava.library.path=..\\\\..\\\\..\\\\..\\\\java\\\\dev\\\\mizux\\\\javanative"],
     "//conditions:default": [],
   }),
   deps = [
-    "//java/dev/mizux/javanative:Loader",
     ":foo",
+    "//java/dev/mizux/javanative:Loader",
   ],
 )
