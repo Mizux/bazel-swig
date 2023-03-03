@@ -46,7 +46,7 @@ java_test(
   srcs = ["BarTest.java"],
   main_class = "dev.mizux.javanative.BarTest",
   jvm_flags = select({
-    "@platforms//os:windows": ["-Djava.library.path=..\\\\..\\\\..\\\\..\\\\java\\\\dev\\\\mizux\\\\javanative"],
+    "@platforms//os:windows": ["-Djava.library.path=../../../../java/dev/mizux/javanative"],
     "//conditions:default": [],
   }),
   deps = [
