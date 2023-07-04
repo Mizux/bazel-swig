@@ -1,6 +1,7 @@
 # Create a virtual environment with all tools installed
 # ref: https://hub.docker.com/r/opensuse/tumbleweed
 FROM opensuse/tumbleweed AS env
+
 # Install system build dependencies
 # note: zypper only provide 'bazel' 3.7.2 pkg
 ENV PATH=/usr/local/bin:$PATH
