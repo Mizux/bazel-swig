@@ -79,7 +79,7 @@ load("@rules_python//python:repositories.bzl", "py_repositories")
 py_repositories()
 
 # Create a central external repo, @pip_deps, that contains Bazel targets for all the
-# third-party packages specified in the bazel/requirements.txt file.
+# third-party packages specified in the requirements.txt file.
 load("@rules_python//python:pip.bzl", "pip_parse")
 pip_parse(
    name = "pip_deps",
