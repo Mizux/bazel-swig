@@ -52,13 +52,13 @@ To build this example you should use:
 * on UNIX:
 
   ```sh
-  bazel build -c opt --cxxopt=-std=c++17 ...
+  bazel build -c opt --cxxopt=-std=c++17 --subcommands=true ...
   ```
 
 * on Windows when using MSVC:
 
   ```sh
-  bazel build -c opt --cxxopt="-std:c++17" ...
+  bazel build -c opt --cxxopt="-std:c++17" --subcommands=true ...
   ```
 
 ## Running Tests
