@@ -1,0 +1,13 @@
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
+
+exports_files([
+  "requirements.in",
+  "requirements.txt",
+])
+
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
+compile_pip_requirements(
+  name = "requirements",
+  requirements_in = "requirements.in",
+  requirements_txt = "requirements.txt",
+)
