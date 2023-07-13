@@ -1,13 +1,19 @@
+# ref: https://github.com/actions/runner-images
 name: amd64 macOS
 
 on: [push, pull_request]
 
 jobs:
-  bazel:
+  macos:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        option: [
+          '--action_env=BAZEL_CXXOPTS="-std=c++17"',
+          '--cxxopt="-std=c++17"']
+      fail-fast: false
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Set Java to OpenJDK 17 (Temurin)
         uses: actions/setup-java@v3
         with:
@@ -18,10 +24,21 @@ jobs:
       - name: Install Bazel
         run: |
           brew update
-          #brew install bazel
+          brew unlink bazelisk
+          brew install bazel
       - name: Check Bazel
         run: bazel version
       - name: Build
-        run: bazel build -c opt --cxxopt=-std=c++17 --subcommands=true ...
+        run: >
+          bazel build
+          -c opt
+          ${{ matrix.option }}
+          --subcommands=true
+          ...
       - name: Test
-        run: bazel test -c opt --cxxopt=-std=c++17 --test_output=errors ...
+        run: >
+          bazel test
+          -c opt
+          ${{ matrix.option }}
+          --test_output=all
+          ...
