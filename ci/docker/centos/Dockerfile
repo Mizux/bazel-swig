@@ -5,7 +5,8 @@ FROM quay.io/centos/centos:stream AS env
 # Install system build dependencies
 ENV PATH=/usr/local/bin:$PATH
 RUN dnf -y update \
-&& dnf -y install git wget gcc-toolset-11 \
+&& dnf -y install git wget zlib-devel \
+&& dnf -y groupinstall "Development Tools" \
 && dnf clean all \
 && rm -rf /var/cache/dnf
 
@@ -22,7 +23,7 @@ https://copr.fedorainfracloud.org/coprs/vbatts/bazel/repo/epel-8/vbatts-bazel-ep
 
 # Install Python
 RUN dnf -y update \
-&& dnf -y install python39-devel \
+&& dnf -y install python3.11-devel python3.11-pip \
 && dnf clean all \
 && rm -rf /var/cache/dnf
 
@@ -32,7 +33,15 @@ COPY . .
 
 FROM devel AS build
 RUN bazel version
-RUN bazel build -c opt --cxxopt=-std=c++17 ...
+RUN bazel build \
+ -c opt \
+ --cxxopt="-std=c++17" \
+ --subcommands=true \
+ ...
 
 FROM build AS test
-RUN bazel test -c opt --cxxopt=-std=c++17 --test_output=errors ...
+RUN bazel test \
+ -c opt \
+ --cxxopt="-std=c++17" \
+ --test_output=errors \
+ ...
