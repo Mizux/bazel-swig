@@ -1,13 +1,17 @@
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 
 exports_files([
-  "requirements.in",
-  "requirements.txt",
+    "requirements.in",
+    "requirements.txt",
 ])
 
-load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 compile_pip_requirements(
-  name = "requirements",
-  requirements_in = "requirements.in",
-  requirements_txt = "requirements.txt",
+    name = "requirements",
+    extra_args = [
+        "--allow-unsafe",  # Pin packages considered unsafe
+        "--resolver=backtracking",  # Avoid warning, new default
+    ],
+    generate_hashes = False,
+    requirements_in = "requirements.in",
+    requirements_txt = "requirements.txt",
 )
