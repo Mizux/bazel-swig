@@ -5,7 +5,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_r
 ## Bazel Skylib rules.
 git_repository(
     name = "bazel_skylib",
-    tag = "1.4.1",
+    tag = "1.4.2",
     remote = "https://github.com/bazelbuild/bazel-skylib.git",
 )
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
@@ -14,14 +14,21 @@ bazel_skylib_workspace()
 ## Bazel rules.
 git_repository(
     name = "platforms",
-    tag = "0.0.6",
+    tag = "0.0.7",
     remote = "https://github.com/bazelbuild/platforms.git",
 )
 
 git_repository(
     name = "rules_cc",
-    tag = "0.0.6",
+    tag = "0.0.8",
     remote = "https://github.com/bazelbuild/rules_cc.git",
+)
+
+git_repository(
+    name = "rules_java",
+    tag = "6.4.0",
+    #tag = "6.5.1",
+    remote = "https://github.com/bazelbuild/rules_java.git",
 )
 
 git_repository(
@@ -34,13 +41,13 @@ git_repository(
 git_repository(
     name = "contrib_rules_jvm",
     tag = "v0.9.0",
-    #tag = "v0.14.0",
+    #tag = "v0.18.0",
     remote = "https://github.com/bazel-contrib/rules_jvm.git",
 )
 
 git_repository(
     name = "rules_python",
-    tag = "0.23.1",
+    tag = "0.24.0",
     remote = "https://github.com/bazelbuild/rules_python.git",
 )
 
@@ -90,6 +97,10 @@ load("@pip_deps//:requirements.bzl", install_pip_deps="install_deps")
 install_pip_deps()
 
 ## Java support (with junit 5)
+load("@rules_java//java:repositories.bzl", "rules_java_dependencies", "rules_java_toolchains")
+rules_java_dependencies()
+rules_java_toolchains()
+
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
 rules_jvm_external_deps()
 
@@ -101,7 +112,7 @@ JUNIT_JUPITER_VERSION = "5.9.2"
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
-        "net.java.dev.jna:jna:aar:5.12.1",
+        "net.java.dev.jna:jna:aar:5.13.0",
         "com.google.truth:truth:0.32",
         "org.junit.platform:junit-platform-launcher:%s" % JUNIT_PLATFORM_VERSION,
         "org.junit.platform:junit-platform-reporting:%s" % JUNIT_PLATFORM_VERSION,
@@ -125,4 +136,10 @@ git_repository(
     name = "com_google_googletest",
     tag = "v1.13.0",
     remote = "https://github.com/google/googletest.git",
+)
+
+git_repository(
+    name = "com_google_benchmark",
+    tag = "v1.8.1",
+    remote = "https://github.com/google/benchmark.git",
 )
