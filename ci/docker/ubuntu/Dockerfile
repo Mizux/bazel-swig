@@ -13,9 +13,11 @@ RUN apt-get update -qq \
 && apt-get install -yq default-jdk \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Install Bazel
 RUN curl https://bazel.build/bazel-release.pub.gpg | apt-key add -
-RUN echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+ARG TARGETARCH
+RUN echo "deb [arch=$TARGETARCH] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
 RUN apt-get update -qq \
 && apt-get install -yq bazel \
 && apt-get clean \
@@ -29,13 +31,11 @@ FROM devel AS build
 RUN bazel version
 RUN bazel build \
  -c opt \
- --cxxopt="-std=c++17" \
  --subcommands=true \
  ...
 
 FROM build AS test
 RUN bazel test \
  -c opt \
- --cxxopt="-std=c++17" \
  --test_output=all \
  ...
