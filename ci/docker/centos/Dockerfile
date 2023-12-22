@@ -19,6 +19,12 @@ https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-
 && chmod +x bazelisk-linux-amd64 \
 && mv bazelisk-linux-amd64 /usr/local/bin/bazel
 
+# Install Java
+RUN dnf -y update \
+&& dnf -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel maven \
+&& dnf clean all \
+&& rm -rf /var/cache/dnf
+
 # Install Python
 RUN dnf -y update \
 && dnf -y install python3.11-devel python3.11-pip \
