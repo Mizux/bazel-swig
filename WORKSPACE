@@ -1,11 +1,12 @@
 workspace(name = "org_mizux_bazelswig")
+
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
 
 # Bazel Extensions
 ## Bazel Skylib rules.
 git_repository(
     name = "bazel_skylib",
-    tag = "1.4.2",
+    tag = "1.5.0",
     remote = "https://github.com/bazelbuild/bazel-skylib.git",
 )
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
@@ -14,40 +15,37 @@ bazel_skylib_workspace()
 ## Bazel rules.
 git_repository(
     name = "platforms",
-    tag = "0.0.7",
+    tag = "0.0.8",
     remote = "https://github.com/bazelbuild/platforms.git",
 )
 
 git_repository(
     name = "rules_cc",
-    tag = "0.0.8",
+    tag = "0.0.9",
     remote = "https://github.com/bazelbuild/rules_cc.git",
 )
 
 git_repository(
     name = "rules_java",
-    tag = "6.4.0",
-    #tag = "6.5.1",
+    tag = "7.3.1",
     remote = "https://github.com/bazelbuild/rules_java.git",
 )
 
 git_repository(
     name = "rules_jvm_external",
-    tag = "5.2",
-    #tag = "5.3",
+    tag = "5.3",
     remote = "https://github.com/bazelbuild/rules_jvm_external.git",
 )
 
 git_repository(
     name = "contrib_rules_jvm",
-    tag = "v0.9.0",
-    #tag = "v0.18.0",
+    tag = "v0.19.0",
     remote = "https://github.com/bazel-contrib/rules_jvm.git",
 )
 
 git_repository(
     name = "rules_python",
-    tag = "0.24.0",
+    tag = "0.27.1",
     remote = "https://github.com/bazelbuild/rules_python.git",
 )
 
@@ -56,7 +54,7 @@ git_repository(
 # pcre source code repository
 new_git_repository(
     name = "pcre2",
-    build_file = "//bazel:pcre2.BUILD",
+    build_file = "//bazel:pcre2.BUILD.bazel",
     tag = "pcre2-10.42",
     remote = "https://github.com/PCRE2Project/pcre2.git",
 )
@@ -70,18 +68,18 @@ new_git_repository(
 #   edit .gitignore and remove parser.h, parser.c, and swigwarn.swg
 #   git add Source/CParse/parser.h Source/CParse/parser.c Lib/swigwarn.swg
 #   git diff --staged Lib Source/CParse > <path to>swig.patch
-# Edit swig.BUILD:
+# Edit swig.BUILD.bazel:
 #   edit version
 new_git_repository(
     name = "swig",
-    build_file = "//bazel:swig.BUILD",
+    build_file = "//bazel:swig.BUILD.bazel",
     patches = ["//bazel:swig.patch"],
     patch_args = ["-p1"],
     tag = "v4.1.1",
     remote = "https://github.com/swig/swig.git",
 )
 
-# Python
+## Python
 load("@rules_python//python:repositories.bzl", "py_repositories")
 py_repositories()
 
@@ -90,7 +88,7 @@ py_repositories()
 load("@rules_python//python:pip.bzl", "pip_parse")
 pip_parse(
    name = "pip_deps",
-   requirements = "//:requirements.txt",
+   requirements_lock = "//:requirements.txt",
 )
 
 load("@pip_deps//:requirements.bzl", install_pip_deps="install_deps")
@@ -112,7 +110,7 @@ JUNIT_JUPITER_VERSION = "5.9.2"
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
-        "net.java.dev.jna:jna:aar:5.13.0",
+        "net.java.dev.jna:jna:5.14.0",
         "com.google.truth:truth:0.32",
         "org.junit.platform:junit-platform-launcher:%s" % JUNIT_PLATFORM_VERSION,
         "org.junit.platform:junit-platform-reporting:%s" % JUNIT_PLATFORM_VERSION,
