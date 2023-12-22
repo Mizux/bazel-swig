@@ -3,22 +3,19 @@ name: amd64 Windows
 
 on: [push, pull_request, workflow_dispatch]
 
-jobs:
   # Building using the github runner environement directly.
-  windows:
+jobs:
+  native:
     strategy:
       matrix:
         # VS-2022 broken see https://github.com/bazelbuild/bazel/issues/18592
         runner: [windows-2022, windows-2019]
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
-        option: [
-          '--action_env=BAZEL_CXXOPTS="/std:c++17"',
-          '--cxxopt="/std:c++17"']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
       fail-fast: false # Don't cancel all jobs if one fails.
+    name: ${{ matrix.runner }} • Bazel * Python-${{ matrix.python-version }}
     runs-on: ${{ matrix.runner }}
-    #runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
@@ -39,13 +36,11 @@ jobs:
         run: >
           bazel build
           -c opt
-          ${{ matrix.option }}
-          --subcommands=true
+          --subcommands=pretty_print
           ...
       - name: Test
         run: >
           bazel test
           -c opt
-          ${{ matrix.option }}
-          --test_output=all
+          --test_output=errors
           ...

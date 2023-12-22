@@ -1,20 +1,19 @@
 # ref: https://github.com/actions/runner-images
-name: amd64 macOS
+name: amd64 MacOS
 
 on: [push, pull_request, workflow_dispatch]
 
+# Building using the github runner environement directly.
 jobs:
-  macos:
-    runs-on: macos-latest
+  native:
     strategy:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
-        option: [
-          '--action_env=BAZEL_CXXOPTS="-std=c++17"',
-          '--cxxopt="-std=c++17"']
       fail-fast: false
+    name: MacOS • Bazel • Python-${{ matrix.python-version }}
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set Java to OpenJDK 17 (Temurin)
         uses: actions/setup-java@v3
         with:
@@ -39,13 +38,11 @@ jobs:
         run: >
           bazel build
           -c opt
-          ${{ matrix.option }}
-          --subcommands=true
+          --subcommands=pretty_print
           ...
       - name: Test
         run: >
           bazel test
           -c opt
-          ${{ matrix.option }}
-          --test_output=all
+          --test_output=errors
           ...

@@ -3,19 +3,17 @@ name: amd64 Linux
 
 on: [push, pull_request, workflow_dispatch]
 
-jobs:
   # Building using the github runner environement directly.
-  linux:
-    runs-on: ubuntu-latest
+jobs:
+  native:
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
-        option: [
-          '--action_env=BAZEL_CXXOPTS="-std=c++17"',
-          '--cxxopt="-std=c++17"']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
       fail-fast: false
+    name: Linux • Bazel • Python-${{ matrix.python-version }}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
@@ -35,13 +33,11 @@ jobs:
         run: >
           bazel build
           -c opt
-          ${{ matrix.option }}
-          --subcommands=true
+          --subcommands=pretty_print
           ...
       - name: Test
         run: >
           bazel test
           -c opt
-          ${{ matrix.option }}
-          --test_output=all
+          --test_output=errors
           ...
