@@ -1,4 +1,4 @@
 # Code dependencies
-numpy==1.25.2
+numpy==1.26.1
 
-black==23.7.0
+black==23.10.1

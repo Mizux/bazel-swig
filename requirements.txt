@@ -4,13 +4,13 @@
 #
 #    bazel run //:requirements.update
 #
-black==23.7.0
+black==23.10.1
     # via -r requirements.in
 click==8.1.4
     # via black
 mypy-extensions==1.0.0
     # via black
-numpy==1.25.2
+numpy==1.26.1
     # via -r requirements.in
 packaging==23.1
     # via black
