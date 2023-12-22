@@ -5,14 +5,18 @@ FROM alpine:edge AS env
 # Install system build dependencies
 ENV PATH=/usr/local/bin:$PATH
 RUN apk add --no-cache git build-base linux-headers zlib-dev
-RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing bazel6
+#RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing bazel6
+
+# Install Bazelisk
+RUN apk add --no-cache libc6-compat bash
+RUN wget \
+https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 \
+&& chmod +x bazelisk-linux-amd64 \
+&& mv bazelisk-linux-amd64 /usr/local/bin/bazel
 
 # Install OpenJDK17
 # note: default-jvm will now point to java-17-openjdk
-RUN apk add --no-cache openjdk17 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
-# Remove infinite loop since jre point to the current directory
-# otherwise bazel issue an error and stop...
-RUN rm /usr/lib/jvm/default-jvm/jre
+RUN apk add --no-cache openjdk17
 
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
 ENV PATH=$JAVA_HOME/bin:$PATH
@@ -25,8 +29,8 @@ WORKDIR /home/project
 COPY . .
 
 FROM devel AS build
-RUN bazel version
-RUN bazel build \
+RUN bazel --server_javabase=/usr/lib/jvm/default-jvm version
+RUN bazel --server_javabase=/usr/lib/jvm/default-jvm build \
  -c opt \
  --subcommands=true \
  ...
