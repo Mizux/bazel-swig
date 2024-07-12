@@ -16,7 +16,7 @@ RUN apt-get update -qq \
 
 # Install Bazel
 RUN curl https://bazel.build/bazel-release.pub.gpg | apt-key add -
-ARG TARGETARCH
+ARG TARGETARCH=amd64
 RUN echo "deb [arch=$TARGETARCH] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
 RUN apt-get update -qq \
 && apt-get install -yq bazel \
