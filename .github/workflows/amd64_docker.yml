@@ -16,7 +16,7 @@ jobs:
       PLATFORM: ${{ matrix.platform }}
       DISTRO: ${{ matrix.distro }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check docker
         run: |
           docker info
