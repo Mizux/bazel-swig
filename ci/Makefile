@@ -189,7 +189,13 @@ targets_$1_$2 = $(addprefix $1_, $(addsuffix _$2, $(DISTROS)))
 $1_all_$2: $$(targets_$1_$2)
 $$(targets_$1_$2): $1_%_$2: docker/%/Dockerfile
 	#@docker image rm -f ${IMAGE}:$1_$$*_$2 2>/dev/null
-	${DOCKER_BUILDX_CMD} --platform linux/$1 --target=$2 --tag ${IMAGE}:$1_$$*_$2 -f $$< ..
+	${DOCKER_BUILDX_CMD} \
+ --platform linux/$1 \
+ --build-arg TARGETARCH=$1 \
+ --target=$2 \
+ --tag ${IMAGE}:$1_$$*_$2 \
+ -f $$< \
+ ..
 
 #$$(info Create targets: save_$1_all_$2 $(addprefix save_$1_, $(addsuffix _$2, $(DISTROS))) (debug).)
 save_targets_$1_$2 = $(addprefix save_$1_, $(addsuffix _$2, $(DISTROS)))
