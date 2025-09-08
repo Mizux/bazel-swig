@@ -6,7 +6,7 @@ load("@contrib_rules_jvm//java:defs.bzl", "java_junit5_test")
 
 mizux_java_wrap_cc(
   name = "foo",
-  src = "foo.i",
+  srcs = ["foo.i"],
   package = "dev.mizux.javanative",
   swig_includes = [
     "//java:base_swig",
