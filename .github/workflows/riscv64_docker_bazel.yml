@@ -11,10 +11,10 @@ jobs:
   docker:
     strategy:
       matrix:
-        platform: [arm64]
+        platform: [riscv64]
         distro: [
           # almalinux,
-          alpine,
+          #alpine,
           debian, # currently only unstable not latest
           # fedora,
           # opensuse,

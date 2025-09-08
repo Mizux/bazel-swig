@@ -20,6 +20,18 @@ https://github.com/bazelbuild/bazelisk/releases/download/v1.27.0/bazelisk-linux-
 && chmod +x bazelisk-linux-${TARGETARCH} \
 && mv bazelisk-linux-${TARGETARCH} /usr/local/bin/bazel
 
+# Install Java
+RUN dnf -y update \
+&& dnf -y install java-11-openjdk java-11-openjdk-devel maven \
+&& dnf clean all
+ENV JAVA_HOME=/usr/lib/jvm/java-openjdk
+
+# Install Python
+RUN dnf -y update \
+&& dnf -y install python3-devel python3-pip python3-numpy \
+&& dnf clean all \
+&& rm -rf /var/cache/dnf
+
 # Add the library src to our build env
 FROM env AS devel
 WORKDIR /home/project

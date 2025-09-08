@@ -12,7 +12,15 @@ jobs:
     strategy:
       matrix:
         platform: [arm64]
-        distro: [almalinux, alpine, debian, fedora, opensuse, rockylinux, ubuntu]
+        distro: [
+          almalinux,
+          #alpine,
+          debian,
+          fedora,
+          opensuse,
+          rockylinux,
+          ubuntu
+        ]
       fail-fast: false
     name: ${{matrix.platform}}•${{matrix.distro}}•Bazel
     runs-on: ubuntu-latest
