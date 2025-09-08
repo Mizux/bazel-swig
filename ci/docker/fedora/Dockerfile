@@ -6,23 +6,18 @@ FROM fedora:latest AS env
 ENV PATH=/usr/local/bin:$PATH
 RUN dnf -y update \
 && dnf -y install git wget \
-&& dnf -y groupinstall "Development Tools" \
+&& dnf -y install @development-tools \
 && dnf -y install gcc-c++ zlib-devel \
 && dnf -y install dnf-plugins-core \
 && dnf -y install which \
 && dnf clean all
 
 # Install Bazelisk
+ARG TARGETARCH=amd64
 RUN wget \
-https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 \
-&& chmod +x bazelisk-linux-amd64 \
-&& mv bazelisk-linux-amd64 /usr/local/bin/bazel
-
-# Install Java
-RUN dnf -y update \
-&& dnf -y install java-11-openjdk java-11-openjdk-devel maven \
-&& dnf clean all
-ENV JAVA_HOME=/usr/lib/jvm/java-openjdk
+https://github.com/bazelbuild/bazelisk/releases/download/v1.27.0/bazelisk-linux-${TARGETARCH} \
+&& chmod +x bazelisk-linux-${TARGETARCH} \
+&& mv bazelisk-linux-${TARGETARCH} /usr/local/bin/bazel
 
 # Install Python
 RUN dnf -y update \
@@ -37,7 +32,7 @@ FROM devel AS build
 RUN bazel version
 RUN bazel build \
  -c opt \
- --subcommands=true \
+ --subcommands=pretty_print \
  ...
 
 FROM build AS test

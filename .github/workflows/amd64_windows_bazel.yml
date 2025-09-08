@@ -1,0 +1,56 @@
+# ref: https://github.com/actions/runner-images
+name: amd64 Windows Bazel
+
+on: [push, pull_request, workflow_dispatch]
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+# Building using the github runner environement directly.
+jobs:
+  native:
+    strategy:
+      matrix:
+        python: [
+          #{version: '3.9'},
+          #{version: '3.10'},
+          {version: '3.11'},
+          {version: '3.12'},
+        ]
+      fail-fast: false
+    name: Windows•Bazel•Py${{matrix.python.version}}
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{matrix.python.version}}
+      - name: Check Python
+        run: |
+          python --version
+          python -m platform
+      - name: Install Bazel
+        run: choco install bazel
+      - name: Check Bazel
+        run: bazel version
+      - name: Build
+        run: >
+          bazel build
+          -c opt
+          --subcommands=pretty_print
+          //...
+      - name: Test
+        run: >
+          bazel test
+          -c opt
+          --subcommands=pretty_print
+          --test_output=errors
+          //...
+
+  amd64_windows_bazel:
+    runs-on: ubuntu-latest
+    needs: native
+    steps:
+      - uses: actions/checkout@v5

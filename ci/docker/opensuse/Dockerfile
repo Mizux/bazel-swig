@@ -10,16 +10,11 @@ RUN zypper update -y \
 ENV CC=gcc CXX=g++
 
 # Install Bazelisk
+ARG TARGETARCH=amd64
 RUN wget \
-https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 \
-&& chmod +x bazelisk-linux-amd64 \
-&& mv bazelisk-linux-amd64 /usr/local/bin/bazel
-
-# Java
-RUN zypper install -y java-11-openjdk-devel \
-&& zypper clean -a
-ENV JAVA_HOME=/usr/lib64/jvm/java
-ENV PATH=$JAVA_HOME/bin:$PATH
+https://github.com/bazelbuild/bazelisk/releases/download/v1.27.0/bazelisk-linux-${TARGETARCH} \
+&& chmod +x bazelisk-linux-${TARGETARCH} \
+&& mv bazelisk-linux-${TARGETARCH} /usr/local/bin/bazel
 
 # Install Python
 RUN zypper install -y python3 python3-pip python3-devel \
@@ -33,11 +28,11 @@ FROM devel AS build
 RUN bazel version
 RUN bazel build \
  -c opt \
- --subcommands=true \
+ --subcommands=pretty_print \
  ...
 
 FROM build AS test
 RUN bazel test \
  -c opt \
- --test_output=all \
+ --test_output=errors \
  ...
