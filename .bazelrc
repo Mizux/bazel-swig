@@ -1,4 +1,8 @@
-common --noenable_bzlmod
+# Enable logging rc options.
+common --announce_rc
+
+# Enable Bzlmod for every Bazel command
+common --enable_bzlmod
 
 # Sets the default Apple platform to macOS.
 build --apple_platform_type=macos
