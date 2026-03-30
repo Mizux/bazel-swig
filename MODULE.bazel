@@ -16,7 +16,16 @@ bazel_dep(name = "rules_python", version = "1.9.0")
 bazel_dep(name = "google_benchmark", version = "1.9.5")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 
-bazel_dep(name = "swig", version = "4.3.0")
+bazel_dep(name = "pcre2", version = "10.45")
+bazel_dep(name = "swig", version = "4.3.0.bcr.2")
+
+# Java
+# workaround waiting for rules_jvm_external@7.0
+# see: https://github.com/bazel-contrib/rules_jvm_external/issues/1535
+single_version_override(
+    module_name = "rules_android",
+    version = "0.7.1",
+)
 
 JUNIT_PLATFORM_VERSION = "1.9.2"
 JUNIT_JUPITER_VERSION = "5.9.2"
@@ -31,8 +40,22 @@ maven.install(
         "org.junit.jupiter:junit-jupiter-params:%s" % JUNIT_JUPITER_VERSION,
         "org.junit.jupiter:junit-jupiter-engine:%s" % JUNIT_JUPITER_VERSION,
     ],
+    known_contributing_modules = ["protobuf"],
     repositories = [
         "https://repo1.maven.org/maven2",
     ],
 )
 use_repo(maven, "maven")
+
+# Python
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.defaults(
+  # The environment variable takes precedence if set.
+  python_version = "3.12",
+  python_version_env = "BAZEL_PYTHON_VERSION",
+)
+python.toolchain(python_version = "3.10")
+python.toolchain(python_version = "3.11")
+python.toolchain(python_version = "3.12")
+python.toolchain(python_version = "3.13")
+python.toolchain(python_version = "3.14")
