@@ -15,3 +15,8 @@ compile_pip_requirements(
     requirements_in = "requirements.in",
     requirements_txt = "requirements.txt",
 )
+
+# To fully update `requirements.txt` files run the following commands:
+# cat /dev/null > requirements.txt
+# bazel run //:requirements.update
+
