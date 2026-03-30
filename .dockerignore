@@ -1,6 +1,6 @@
+# Project Files unneeded by docker
 .dockerignore
 
-# Project Files unneeded by docker
 .git
 .gitignore
 .github
@@ -19,9 +19,10 @@ LICENSE
 **/docs
 
 # Native build
-bazel-*/
-build*/
+bazel-*
+build*
 
 # Editor directories and files
+user.bazelrc
 *.user
 *.swp
