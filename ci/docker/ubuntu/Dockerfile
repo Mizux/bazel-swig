@@ -9,6 +9,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Install system build dependencies
 RUN apt update -qq \
 && apt install -yq git wget curl libssl-dev build-essential \
+&& apt install -yq python3-dev python3-pip python3-venv \
+ python3-numpy python3-pandas \
 && apt install -yq default-jdk \
 && apt clean \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
