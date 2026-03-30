@@ -1,4 +1,6 @@
 bazel-*
+user.bazelrc
+
 /build
 /build*
 export/
