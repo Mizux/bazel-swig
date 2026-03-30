@@ -1,23 +1,59 @@
 # Enable logging rc options.
 common --announce_rc
 
+###############################################################################
+# Global options for building Bazel-swig.
+###############################################################################
 # Enable Bzlmod for every Bazel command
 common --enable_bzlmod
 
 # Enable verbose failures for testing only.
 build --verbose_failures
 
-# Set the default Apple platform to macOS.
-build --apple_platform_type=macos
+# Enable absl::string_view support in @googletest
+build --define absl=1
 
-# By default, build in C++ 20 mode.
+# Fix the python version
+build --@rules_python//python/config_settings:python_version=3.12
+
+# Fix the Java version
+build --java_language_version=21 # Version of the source files
+build --java_runtime_version=remotejdk_21 # Hermetic JRE
+
+###############################################################################
+# Per plaform options
+###############################################################################
+
+# By default, build with various extra flags per platform.
 build --enable_platform_specific_config
+
+###############################################################################
+# Options for Linux.
+###############################################################################
+
 build:linux --cxxopt=-std=c++20
 build:linux --host_cxxopt=-std=c++20
-build:macos --cxxopt=-std=c++20 --features=-supports_dynamic_linker
-build:macos --host_cxxopt=-std=c++20 --features=-supports_dynamic_linker
-build:windows --cxxopt=/std:c++20
-build:windows --host_cxxopt=/std:c++20
+
+###############################################################################
+# Options for macOS.
+###############################################################################
+
+# Sets the default Apple platform to macOS.
+build --apple_platform_type=macos
+build:macos --features=-supports_dynamic_linker
+build:macos --cxxopt=-std=c++20 --host_cxxopt=-std=c++20
+build:macos --cxxopt=-Wno-sign-compare --host_cxxopt=-Wno-sign-compare
+build:macos --cxxopt=-Wno-dangling-field --host_cxxopt=-Wno-dangling-field
+build:macos --cxxopt=-Wno-range-loop-construct --host_cxxopt=-Wno-range-loop-construct
+build:macos --cxxopt=-mmacos-version-min=10.15 --host_cxxopt=-mmacos-version-min=10.15
+
+###############################################################################
+# Options for Windows.
+###############################################################################
+
+build:windows --cxxopt=/std:c++20 --host_cxxopt=/std:c++20
+# Enable preprocessor conformance mode needed to correctly support __VA_OPT__
+build:windows --cxxopt=/Zc:preprocessor --host_cxxopt=/Zc:preprocessor
 
 # Enable the runfiles symlink tree on Windows. This makes it possible to build
 # the pip package on Windows without an intermediate data-file archive, as the
@@ -26,17 +62,32 @@ build:windows --host_cxxopt=/std:c++20
 startup --windows_enable_symlinks
 build:windows --enable_runfiles
 
-# Print command lines for build commands.
-#build --subcommands=pretty_print
+###############################################################################
+# Options for continuous integration.
+###############################################################################
 
-# Enable logging error output.
-test --test_output=errors
-test --test_summary=detailed
+# All build options also apply to test as described by the "Option precedence"
+# section in https://bazel.build/run/bazelrc#bazelrc-syntax-semantics.
 
-# https://bazel.build/configure/best-practices#bazelrc-file
-try-import %workspace%/user.bazelrc
+# Note for anybody considering using --compilation_mode=opt in CI, it builds
+# most files twice, one PIC version for shared libraries in tests, and one
+# non-PIC version for binaries.
+build:ci --copt=-O1
 
-# asan
+# Show as many errors as possible.
+build:ci --keep_going
+
+# Show test errors.
+build:ci --test_output=errors
+
+# Print information only about tests executed
+#build:ci --test_summary=detailed
+build:ci --test_summary=short
+
+###############################################################################
+# Options for asan.
+################################################################################
+
 build:asan --strip=never
 build:asan --copt -fsanitize=address
 build:asan --copt -DADDRESS_SANITIZER
@@ -44,3 +95,9 @@ build:asan --copt -O1
 build:asan --copt -g
 build:asan --copt -fno-omit-frame-pointer
 build:asan --linkopt -fsanitize=address
+
+###############################################################################
+# Put user-specific options in user.bazelrc
+# See https://bazel.build/configure/best-practices#bazelrc-file
+################################################################################
+try-import %workspace%/user.bazelrc
